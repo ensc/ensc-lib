@@ -59,7 +59,8 @@ COMPONENT_ldap = \
 
 COMPONENT_mgmmem = \
   mgmmem.c \
-  mgmmem.h
+  mgmmem.h \
+  $(COMPONENT_xalloc)
 
 COMPONENT_build-simple = \
   build-simple.mk \

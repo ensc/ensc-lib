@@ -10,6 +10,8 @@
 
 #include "compiler.h"
 
+#include "xalloc.h"
+
 #ifndef __hidden
 #  define __hidden __attribute__((__visibility__("hidden")))
 #endif
@@ -23,7 +25,7 @@ struct mgmmem_entry {
 	size_t		i;
 
 	for (i = pool->num_entries; i > 0; --i)
-		free(const_cast(void *)(pool->entries[i-1].ptr));
+		freec(pool->entries[i-1].ptr);
 
 	free(pool->entries);
 }
@@ -42,16 +44,14 @@ __hidden bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr)
 	} else {
 		size_t	new_cnt = pool->num_entries * 150 / 100 + 2;
 
-		tmp = realloc(pool->entries, new_cnt * sizeof *tmp);
+		tmp = Xrealloc(pool->entries, new_cnt * sizeof *tmp);
 
-		if (tmp) {
-			pool->entries = tmp;
-			pool->cnt_allocated = new_cnt;
-		}
+		pool->entries = tmp;
+		pool->cnt_allocated = new_cnt;
 	}
 
 	if (!tmp) {
-		free(const_cast(void *)(ptr));
+		freec(ptr);
 		pool->flags |= MGMMEM_POOL_BAD_ALLOC;
 	} else {
 		tmp += pool->num_entries;
