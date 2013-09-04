@@ -45,6 +45,10 @@ COMPONENT_io = \
   io.c \
   io.h \
 
+COMPONENT_http = \
+  http-i18n.c \
+  http-i18n.h \
+
 COMPONENT_build-simple = \
   build-simple.mk \
 
