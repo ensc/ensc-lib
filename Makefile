@@ -54,7 +54,8 @@ COMPONENT_ldap = \
   ldap-open.c \
   ldap.c \
   ldap.h \
-  $(COMPONENT_mgmmem)
+  $(COMPONENT_mgmmem) \
+  $(COMPONENT_xalloc)
 
 COMPONENT_mgmmem = \
   mgmmem.c \

@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 
+#include "xalloc.h"
+
 #ifndef __hidden
 #  define __hidden __attribute__((__visibility__("hidden")))
 #endif
@@ -17,14 +19,11 @@ __hidden char const *ldap_escape_query(char const *s, ssize_t cnt)
 {
 	char		*buf;
 	char		*d;
-	char		*tmp;
 
 	if (cnt == -1)
 		cnt = strlen(s);
 
-	buf = malloc(cnt * 3 + 1);
-	if (!buf)
-		return NULL;
+	buf = Xmalloc(cnt * 3 + 1);
 
 	d = buf;
 	while (cnt-- > 0) {
@@ -48,11 +47,7 @@ __hidden char const *ldap_escape_query(char const *s, ssize_t cnt)
 	}
 
 	*d++ = '\0';
-	tmp = realloc(buf, d - buf);
-
-	if (tmp)
-		/* ignore errors when shrinking buffers and use the old one */
-		buf = tmp;
+	buf = Xrealloc(buf, d - buf);
 
 	return buf;
 }

@@ -15,6 +15,8 @@
 
 #include <et/com_err.h>
 
+#include "xalloc.h"
+
 #ifndef __hidden
 #  define __hidden __attribute__((__visibility__("hidden")))
 #endif
@@ -88,15 +90,8 @@ static LDAP *open_ldap(char const *ldap_dn, struct ensc_ldap_ctx *ctx)
 		char	*s = strsep(&ptr, " ");
 		char	*new_uri;
 
-		new_uri = realloc(uri, (uri ? strlen(uri) : 0)
-				  + strlen(s) + sizeof(" ldap://"));
-		if (!new_uri) {
-			xasprintf(ctx,
-				  "failed to allocate memory for ldap uri: %s",
-				  strerror(errno));
-			ldap_memfree(ldap_servers);
-			goto out;
-		}
+		new_uri = Xrealloc(uri, (uri ? strlen(uri) : 0)
+				   + strlen(s) + sizeof(" ldap://"));
 
 		if (uri)
 			strcat(new_uri, " ");
