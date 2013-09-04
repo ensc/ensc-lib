@@ -67,4 +67,5 @@ $(addprefix $D/,$(_COMPONENT)):$D/%:	% Makefile | $D
 	@rm -f $@.tmp
 	sed ${_SED_COMMAND} $< > $@.tmp
 	test -e $@ && diff -u $@ $@.tmp > $@.patch || :
+	test -s $@.patch || rm -f $@.patch
 	@mv $@.tmp $@
