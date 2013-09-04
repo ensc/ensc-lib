@@ -1,9 +1,14 @@
 CC = gcc
 TAR = tar
+SED = sed
+CMP = cmp
 XZ = xz
 PKG_CONFIG = pkg-config
-MSGFMT = msgfmt
 XXD = xxd
+
+MSGFMT = msgfmt
+XGETTEXT = xgettext
+MSGMERGE = msgmerge
 
 TARFLAGS = --owner=root --group=root --mode=a+rX,go-w
 
@@ -60,6 +65,7 @@ endef
 
 define _i18nrule
 LINGUAS ?=	$2
+POTFILE ?=	$1/$$(PACKAGE).pot
 
 _po_files = $$(addsuffix .po,$$(addprefix $1/,$$(LINGUAS)))
 _mo_files = $$(_po_files:%.po=%.mo)
@@ -70,6 +76,8 @@ $$(_all_inst_mo):$$(call _full_mo_path,%):	$1/%.mo
 	$$(MKDIR_P) $${@D}
 	$$(INSTALL_DATA) $$< $$@
 
+$$(PACKAGE)-$$(VERSION).tar:	$$(_po_files)
+
 i18n:		$$(_mo_files)
 install-i18n:	$$(_all_inst_mo)
 install:	install-i18n
@@ -79,8 +87,41 @@ clean-i18n:
 	rm -f $$(_mo_files)
 clean:	clean-i18n
 
-%.mo:	%.po
+$$(abspath $1):
+	$$(MKDIR_P) $$@
+
+%.mo:	%.po | $$(abspath $1)
 	$$(MSGFMT) -c -o $$@ $$<
+
+ifeq ($$(abspath $$(abs_top_srcdir)),$$(abspath $$(abs_top_builddir)))
+%.po:	$$(POTFILE)
+	$$(MSGMERGE) $$(AM_MSGMERGE_FLAGS) $$@ $$<
+	@touch $$@
+
+$$(POTFILE):	$3
+	@rm -f $$@.tmp $$@.tmp1 $$@.tmp2
+	$$(XGETTEXT) $$(AM_XGETTEXT_FLAGS) $$^ -o $$@.tmp
+	$(SED) '1,/^$$$$/s/^"POT-Creation-Date: .*//' $$@.tmp > $$@.tmp1
+	$(SED) '1,/^$$$$/s/^"POT-Creation-Date: .*//' $$@     > $$@.tmp2 || :
+	$(CMP) -s $$@.tmp1 $$@.tmp2 || mv -f $$@.tmp $$@
+	@rm -f $$@.tmp $$@.tmp1 $$@.tmp2
+	@touch $$@
+endif
+
+.SECONDARY:	$$(POTFILE)
+
+ifneq ($4,)
+_build_mo_links = $$(addsuffix /LC_MESSAGES/$$(PACKAGE).mo,$$(addprefix $4/,$$(LINGUAS)))
+i18n-buildenv:	$4/.stamp
+$4/.stamp:	| $$(_build_mo_links)
+	@touch $$@
+
+$$(_build_mo_links):$4/%/LC_MESSAGES/$$(PACKAGE).mo:	$1/%.po
+	@rm -rf $${@D}
+	@$$(MKDIR_P) $${@D}
+	ln -s $$(abspath $$(patsubst %.po,%.mo,$$<)) $$@
+endif
+
 endef
 
 ################
@@ -98,6 +139,6 @@ $(eval $(call _compressrule))
 
 dist:	$(addprefix $$(PACKAGE)-$$(VERSION).tar,$1)
 
-$$(PACKAGE)-$$(VERSION).tar:	$2 $$(MAKEFILE_LIST) $(_po_files)
+$$(PACKAGE)-$$(VERSION).tar:	$2 $$(MAKEFILE_LIST)
 	$(call _createtarball,$$@,$$(PACKAGE)-$$(VERSION),$$(sort $$(abspath $$^)))
 endef
