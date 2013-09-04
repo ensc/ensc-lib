@@ -48,6 +48,7 @@ COMPONENT_io = \
 COMPONENT_http = \
   http-i18n.c \
   http-i18n.h \
+ $(COMPONENT_xalloc) \
 
 COMPONENT_ldap = \
   ldap-open.c \

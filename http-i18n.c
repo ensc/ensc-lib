@@ -13,6 +13,8 @@
 
 #include "compiler.h"
 
+#include "xalloc.h"
+
 #ifndef __hidden
 #  define __hidden __attribute__((__visibility__("hidden")))
 #endif
@@ -80,9 +82,7 @@ static bool is_valid_lang(char const *lang, size_t len)
 		if (!is_valid_lang(cur, ptr - cur))
 			continue;
 
-		lcbuf = realloc(lcbuf, ptr - cur + sizeof(".UTF-8"));
-		if (!lcbuf)
-			abort();
+		lcbuf = Xrealloc(lcbuf, ptr - cur + sizeof(".UTF-8"));
 
 		strncpy(lcbuf, cur, ptr - cur);
 		strcpy(lcbuf + (ptr - cur), ".UTF-8");
