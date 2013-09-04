@@ -72,6 +72,11 @@ COMPONENT_strbuf = \
   strbuf.h \
   $(COMPONENT_xalloc)
 
+COMPONENT_serialize = \
+  serialize.h \
+  $(COMPONENT_compiler) \
+  $(COMPONENT_xalloc)
+
 -include $(D)/setup.mk
 
 _SED_COMMAND = $(foreach c,$(CUSTOMIZATIONS),$(CUSTOMIZATION_$c) )
