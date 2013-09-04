@@ -121,7 +121,7 @@ $$(abspath $1):
 %.mo:	%.po | $$(abspath $1)
 	$$(MSGFMT) -c -o $$@ $$<
 
-ifeq ($$(abspath $$(abs_top_srcdir)),$$(abspath $$(abs_top_builddir)))
+ifeq (${SKIP_GETTEXT}$$(abspath $$(abs_top_srcdir)),$$(abspath $$(abs_top_builddir)))
 %.po:	$$(POTFILE)
 	$$(MSGMERGE) $$(AM_MSGMERGE_FLAGS) $$@ $$<
 	@touch $$@
