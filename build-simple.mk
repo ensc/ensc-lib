@@ -40,9 +40,12 @@ libexecdir = $(prefix)/libexec
 datadir = $(prefix)/share
 localedir = $(datadir)/locale
 
+localstatedir = $(prefix)/var
+
 pkglibdir = $(libdir)/$(PACKAGE)
 pkgdatadir = $(datadir)/$(PACKAGE)
 pkglibexecdir = $(libexecdir)/$(PACKAGE)
+pkgstatedir = $(localstatedir)/$(PACKAGE)
 
 _target_types = PROGRAMS MODULES SCRIPTS
 
