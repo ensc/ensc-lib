@@ -60,7 +60,7 @@ _targets :=	$(foreach t,${_target_types},$($1_$t) )
 _dstdir :=	$$(DESTDIR)$$(${1}dir)/
 _abstargets :=	$$(addprefix $${_dstdir},$$(_targets))
 
-all:		${_targets}
+all:		$${_targets}
 install:	install-$1
 install-$1:	$$(_abstargets)
 
