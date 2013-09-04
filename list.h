@@ -11,12 +11,15 @@
 #endif
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stddef.h>
 
 #ifdef DEBUG_LIST
 #  include <assert.h>
 #  include "abort.h"
 #endif
+
+#include "compiler.h"
 
 #ifdef __cplusplus
 extern "C" {
