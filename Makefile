@@ -68,6 +68,10 @@ COMPONENT_build-simple = \
 COMPONENT_xalloc = \
   xalloc.h
 
+COMPONENT_strbuf = \
+  strbuf.h \
+  $(COMPONENT_xalloc)
+
 -include $(D)/setup.mk
 
 _SED_COMMAND = $(foreach c,$(CUSTOMIZATIONS),$(CUSTOMIZATION_$c) )
