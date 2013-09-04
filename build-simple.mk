@@ -47,7 +47,7 @@ pkgdatadir = $(datadir)/$(PACKAGE)
 pkglibexecdir = $(libexecdir)/$(PACKAGE)
 pkgstatedir = $(localstatedir)/$(PACKAGE)
 
-_target_types = PROGRAMS MODULES SCRIPTS
+_target_types = PROGRAMS MODULES SCRIPTS DATA
 
 ### default goal ###
 
@@ -73,6 +73,7 @@ _abstargets :=
 
 $${eval $$(call __instmethod,$1_PROGRAMS,$${INSTALL_PROG})}
 $${eval $$(call __instmethod,$1_MODULES,$${INSTALL_PROG})}
+$${eval $$(call __instmethod,$1_DATA,$${INSTALL_DATA})}
 $${eval $$(call __instmethod,$1_SCRIPTS,$${INSTALL_PROG})}
 
 $$(foreach t,$${_targets},$$(eval $$(call __installrule,$$t,$${_dstdir})))
