@@ -15,7 +15,11 @@ ssize_t read_eof(int fd, void *dst, size_t max_len);
 bool write_all(int fd, void const *src, size_t len);
 bool write_str(int fd, char const *src, ssize_t len);
 
-#define write_strbuf(_fd, _str) \
-	write_all(_fd, (_str), strlen(_str))
+#define write_strbuf(_fd, _str)				\
+	({						\
+		char const	*_tmp = (_str);		\
+		write_all(_fd, (_tmp), strlen(_tmp));	\
+	})
+
 
 #endif	/* H_ENSC_LIB_IO_H */
