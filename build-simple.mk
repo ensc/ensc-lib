@@ -49,6 +49,10 @@ pkgstatedir = $(localstatedir)/$(PACKAGE)
 
 _target_types = PROGRAMS MODULES SCRIPTS
 
+### default goal ###
+
+all:
+
 #################
 
 define _installrule
