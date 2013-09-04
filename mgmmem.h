@@ -20,6 +20,8 @@ struct mgmmem_pool {
 	unsigned long		flags;
 };
 
+#define DECLARE_MGMMEM_POOL(_p) { NULL, 0, 0, 0 }
+
 inline static void mgmmem_init(struct mgmmem_pool *pool)
 {
 	pool->entries = NULL;
