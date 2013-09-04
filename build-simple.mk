@@ -6,6 +6,10 @@ XZ = xz
 PKG_CONFIG = pkg-config
 XXD = xxd
 
+BUILD_CC = $(CC)
+BUILD_CFLAGS ?= $(CFLAGS)
+BUILD_CPPFLAGS ?= $(CPPFLAGS)
+
 MSGFMT = msgfmt
 XGETTEXT = xgettext
 MSGMERGE = msgmerge
@@ -20,7 +24,7 @@ INSTALL_PROG = $(INSTALL) -m 0755
 abs_top_builddir = $(abspath ./)
 
 _createtarball = $(TAR) cf $1 $(TARFLAGS) $(if $2,-P --transform='s!^(($(abs_top_srcdir))|($(abs_top_builddir)/?))?!$2/!x') $3
-_buildflags = $(foreach k,CPP $1 LD, $(AM_$kFLAGS) $($kFLAGS) $($kFLAGS_$@))
+_buildflags = $(foreach k,CPP $1 LD, $(AM_$2$kFLAGS) $($2$kFLAGS) $($kFLAGS_$@))
 
 _pkg_get_cflags =	$(shell $(PKG_CONFIG) --cflags $1)
 _pkg_get_libs =		$(shell $(PKG_CONFIG) --libs $1)
