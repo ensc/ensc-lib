@@ -55,10 +55,27 @@ all:
 
 #################
 
+define __instmethod
+__f :=		$$(addprefix $${_dstdir},$$(notdir $${$1}))
+_abstargets +=	$${__f}
+$${__f}:	_install_method=$2
+endef
+
+define __installrule
+$2$$(notdir $1):	$1 | $2
+	$${_install_method} $$< $$@
+endef
+
 define _installrule
 _targets :=	$(foreach t,${_target_types},$($1_$t) )
 _dstdir :=	$$(DESTDIR)$$(${1}dir)/
-_abstargets :=	$$(addprefix $${_dstdir},$$(_targets))
+_abstargets :=
+
+$${eval $$(call __instmethod,$1_PROGRAMS,$${INSTALL_PROG})}
+$${eval $$(call __instmethod,$1_MODULES,$${INSTALL_PROG})}
+$${eval $$(call __instmethod,$1_SCRIPTS,$${INSTALL_PROG})}
+
+$$(foreach t,$${_targets},$$(eval $$(call __installrule,$$t,$${_dstdir})))
 
 all:		$${_targets}
 install:	install-$1
