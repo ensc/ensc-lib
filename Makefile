@@ -49,6 +49,12 @@ COMPONENT_http = \
   http-i18n.c \
   http-i18n.h \
 
+COMPONENT_ldap = \
+  ldap-open.c \
+  ldap.c \
+  ldap.h \
+  $(COMPONENT_mgmmem)
+
 COMPONENT_mgmmem = \
   mgmmem.c \
   mgmmem.h
