@@ -77,6 +77,10 @@ COMPONENT_serialize = \
   $(COMPONENT_compiler) \
   $(COMPONENT_xalloc)
 
+COMPONENT_unserialize = \
+  unserialize.h \
+  $(COMPONENT_strbuf)
+
 -include $(D)/setup.mk
 
 _SED_COMMAND = $(foreach c,$(CUSTOMIZATIONS),$(CUSTOMIZATION_$c) )
