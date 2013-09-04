@@ -62,6 +62,9 @@ COMPONENT_mgmmem = \
 COMPONENT_build-simple = \
   build-simple.mk \
 
+COMPONENT_xalloc = \
+  xalloc.h
+
 -include $(D)/setup.mk
 
 _SED_COMMAND = $(foreach c,$(CUSTOMIZATIONS),$(CUSTOMIZATION_$c) )
