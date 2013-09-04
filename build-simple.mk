@@ -85,12 +85,6 @@ install-$1:	$$(_abstargets)
 $${_dstdir}:
 	mkdir -p $$@
 
-$$(addprefix $${_dstdir},$${$1_PROGRAMS}):	_install_method=$${INSTALL_PROG}
-$$(addprefix $${_dstdir},$${$1_MODULES}):	_install_method=$${INSTALL_PROG}
-
-$$(_abstargets):$$(DESTDIR)$$(${1}dir)/%:	% | $${_dstdir}
-	$${_install_method} $$< $$@
-
 endef
 
 ################
