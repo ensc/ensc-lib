@@ -89,6 +89,8 @@ endef
 
 ################
 
+POTFILE_CMP_SED := '1,/^$$$$/s/^"POT-Creation-Date: .*//;/^\#:/d'
+
 define _i18nrule
 LINGUAS ?=	$2
 POTFILE ?=	$1/$$(PACKAGE).pot
@@ -127,8 +129,8 @@ ifeq ($$(abspath $$(abs_top_srcdir)),$$(abspath $$(abs_top_builddir)))
 $$(POTFILE):	$3
 	@rm -f $$@.tmp $$@.tmp1 $$@.tmp2
 	$$(XGETTEXT) $$(AM_XGETTEXT_FLAGS) $$^ -o $$@.tmp
-	$(SED) '1,/^$$$$/s/^"POT-Creation-Date: .*//' $$@.tmp > $$@.tmp1
-	$(SED) '1,/^$$$$/s/^"POT-Creation-Date: .*//' $$@     > $$@.tmp2 || :
+	$(SED) $(POTFILE_CMP_SED) $$@.tmp > $$@.tmp1
+	$(SED) $(POTFILE_CMP_SED) $$@     > $$@.tmp2 || :
 	$(CMP) -s $$@.tmp1 $$@.tmp2 || mv -f $$@.tmp $$@
 	@rm -f $$@.tmp $$@.tmp1 $$@.tmp2
 	@touch $$@
