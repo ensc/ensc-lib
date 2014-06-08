@@ -21,6 +21,12 @@
 #if defined __arm__
 #  define __die_code0(_code) __asm__ __volatile__ (".byte 0xff,0xff,0xff,0xff")
 #  define __die_code1(_code) __asm__ __volatile__ ("bkpt %0" : : "I"((_code) % 256))
+#elif defined NDEBUG
+#  define __die_code0(_code) abort()
+#  define __die_code1(_code) abort(0)
+#else
+#  define __die_code0(_code) (*(int volatile *)0 = __LINE__)
+#  define __die_code1(_code) (*(int volatile *)0 = __LINE__)
 #endif
 
 #ifndef DEBUG
