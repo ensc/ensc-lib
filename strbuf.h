@@ -46,9 +46,9 @@ inline static void strbuf_assign_str(struct strbuf *buf, char *str)
 
 inline static void	_strbuf_shrink(struct strbuf *buf, size_t extra)
 {
-	if (buf->alloc <= buf->len + extra) {
-		buf->b = Xrealloc(buf->b, buf->len + extra);
+	if (buf->alloc > buf->len + extra) {
 		buf->alloc = buf->len + extra;
+		buf->b = Xrealloc(buf->b, buf->alloc);
 	}
 }
 
