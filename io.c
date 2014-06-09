@@ -12,6 +12,8 @@
 
 #include <et/com_err.h>
 
+#include "compiler.h"
+
 #ifndef __hidden
 #  define __hidden __attribute__((__visibility__("hidden")))
 #endif
@@ -80,6 +82,43 @@ bool __hidden read_str(int fd, char *dst, size_t max_len)
 		return false;
 
 	dst[slen] = '\0';
+	return true;
+}
+
+bool __hidden read_stra(int fd, char const **dst, size_t *len)
+{
+	uint32_t	slen;
+	char		*buf;
+
+	BUG_ON(*dst != NULL);
+
+	if (!read_all(fd, &slen, sizeof slen))
+		return false;
+
+	slen = be32toh(slen);
+	if (slen == 0) {
+		buf = NULL;
+		goto out;
+	}
+
+	buf  = malloc(slen+1);
+	if (!buf) {
+		com_err(__func__, errno, "failed to alloc %u bytes", slen+1);
+		return false;
+	}
+
+	if (!read_all(fd, buf, slen)) {
+		free(buf);
+		return false;
+	}
+
+	buf[slen] = '\0';
+
+out:
+	*dst = buf;
+	if (len)
+		*len = slen;
+
 	return true;
 }
 

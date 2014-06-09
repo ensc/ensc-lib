@@ -10,6 +10,7 @@
 
 bool read_all(int fd, void *dst, size_t len);
 bool read_str(int fd, char *dst, size_t max_len);
+bool read_stra(int fd, char const**dst, size_t *len);
 ssize_t read_eof(int fd, void *dst, size_t max_len);
 
 bool write_all(int fd, void const *src, size_t len);
