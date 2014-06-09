@@ -149,7 +149,7 @@ bool __hidden write_str(int fd, char const *src, ssize_t len)
 	uint32_t	slen;
 
 	if (len == -1)
-		len = strlen(src);
+		len = src ? strlen(src) : 0;
 
 	slen = htobe32(len);
 
