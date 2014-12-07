@@ -8,7 +8,7 @@
 
 #include "compiler.h"
 
-__noreturn
+_noreturn_
 void alloc_error(char const *, char const *, unsigned int, char const *);
 
 #define _alloc_fn(_type, _fn, ...)					\
@@ -20,11 +20,22 @@ void alloc_error(char const *, char const *, unsigned int, char const *);
 	 })
 
 #define Xmalloc(_sz)		_alloc_fn(void *, malloc, _sz)
-#define Xcalloc(_n,_sz)		_alloc_fn(void *, calloc, _n, _sz)
+#define Xcalloc(_n,_sz)		_alloc_fn(void *, safe_calloc, _n, _sz)
 #define Xrealloc(_ptr,_sz)	_alloc_fn(void *, realloc, _ptr, _sz)
 #define Xstrndup(_str, _sz)	_alloc_fn(char *, strndup, _str, _sz)
 #define Xstrdup(_str)		_alloc_fn(char *, strdup, _str)
 
 #define freec(_c) ({ void const *_tmp = (_c); free((void *)_tmp); })
+
+#define Xrecalloc(_ptr,_n,_sz)	_alloc_fn(void *, recalloc, _ptr, _n, _sz)
+
+#define Xmalloc_flexarr(_s, _n, _attr) \
+	_alloc_fn(void *, malloc_flexarr, _s, _n, _attr)
+#define Xzalloc_flexarr(_s, _n, _attr) \
+	_alloc_fn(void *, zalloc_flexarr, _s, _n, _attr)
+#define Xrealloc_flexarr(_s, _n, _attr)			\
+	_alloc_fn(void *, realloc_flexarr, _s, _n, _attr)
+
+#define xfer_ptr(_ptr)	({ __typeof__(_ptr) _t = (_ptr); (_ptr) = NULL; _t; })
 
 #endif	/* H_ENSC_LIB_XALLOC_H */

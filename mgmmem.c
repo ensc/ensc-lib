@@ -11,16 +11,13 @@
 #include "compiler.h"
 
 #include "xalloc.h"
-
-#ifndef __hidden
-#  define __hidden __attribute__((__visibility__("hidden")))
-#endif
+#include "compiler.h"
 
 struct mgmmem_entry {
 	void const	*ptr;
 };
 
- __hidden void mgmmem_destroy(struct mgmmem_pool *pool)
+_hidden_ void mgmmem_destroy(struct mgmmem_pool *pool)
 {
 	size_t		i;
 
@@ -30,7 +27,7 @@ struct mgmmem_entry {
 	free(pool->entries);
 }
 
-__hidden bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr)
+_hidden_ bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr)
 {
 	struct mgmmem_entry	*tmp;
 
@@ -62,7 +59,7 @@ __hidden bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr)
 	return tmp != NULL;
 }
 
-__hidden char *mgmmem_printf(struct mgmmem_pool *pool, char *fmt, ...)
+_hidden_ char *mgmmem_printf(struct mgmmem_pool *pool, char const *fmt, ...)
 {
 	va_list		ap;
 	int		rc;

@@ -34,7 +34,7 @@ void mgmmem_destroy(struct mgmmem_pool *pool);
 
 bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr);
 
-char *mgmmem_printf(struct mgmmem_pool *pool, char *fmt, ...)
+char *mgmmem_printf(struct mgmmem_pool *pool, char const *fmt, ...)
 	__attribute__((__format__(printf, 2, 3)));
 
 #define mgmmem_xfer(_pool, _ptr) \

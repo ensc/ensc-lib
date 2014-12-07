@@ -10,13 +10,16 @@
 #define unlikely(_cond)		(__builtin_expect(!!(_cond),0))
 
 
-#define __global		__attribute__((__externally_visible__,__used__))
-#define __noreturn		__attribute__((__noreturn__))
-#define __packed		__attribute__((__packed__))
-#define __aligned(_a)		__attribute__((__aligned__(_a)))
-#define __force_inline		__attribute__((__always_inline__))
-#define __must_be_checked	__attribute__((__warn_unused_result__))
-#define __unused		__attribute__((__unused__))
+#define _global_		__attribute__((__externally_visible__,__used__))
+#define _noreturn_		__attribute__((__noreturn__))
+#define _packed_		__attribute__((__packed__))
+#define _aligned_(_a)		__attribute__((__aligned__(_a)))
+#define _force_inline_		__attribute__((__always_inline__))
+#define _must_be_checked_	__attribute__((__warn_unused_result__))
+#define _unused_		__attribute__((__unused__))
+#define _const_			__attribute__((__const__))
+#define _pure_			__attribute__((__pure__))
+#define _hidden_		__attribute__((__visibility__("hidden")))
 
 #if defined __arm__
 #  define __die_code0(_code) __asm__ __volatile__ (".byte 0xff,0xff,0xff,0xff")
@@ -69,6 +72,12 @@
 		_fromtype	_tmp = (_v);				\
 		BUILD_BUG_ON(sizeof(_totype) != sizeof(_fromtype));	\
 		reinterpret_cast(_totype)(_tmp);			\
+	})
+
+#define const_cast2(_type, _v) __extension__	\
+	({					\
+		const _type	_tmp = (_v);	\
+		(_type)(_tmp);			\
 	})
 
 #endif	/* H_UTUN_INCLUDE_COMPILER_GCC_H */

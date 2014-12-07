@@ -14,11 +14,7 @@
 
 #include "compiler.h"
 
-#ifndef __hidden
-#  define __hidden __attribute__((__visibility__("hidden")))
-#endif
-
-ssize_t __hidden read_eof(int fd, void *dst, size_t max_len)
+ssize_t _hidden_ read_eof(int fd, void *dst, size_t max_len)
 {
 	size_t		len = 0;
 
@@ -42,7 +38,7 @@ ssize_t __hidden read_eof(int fd, void *dst, size_t max_len)
 	return -1;
 }
 
-bool __hidden read_all(int fd, void *dst, size_t len)
+bool _hidden_ read_all(int fd, void *dst, size_t len)
 {
 	while (len > 0) {
 		ssize_t	l = read(fd, dst, len);
@@ -64,7 +60,7 @@ bool __hidden read_all(int fd, void *dst, size_t len)
 	return len == 0;
 }
 
-bool __hidden read_str(int fd, char *dst, size_t max_len)
+bool _hidden_ read_str(int fd, char *dst, size_t max_len)
 {
 	uint32_t	slen;
 
@@ -85,7 +81,7 @@ bool __hidden read_str(int fd, char *dst, size_t max_len)
 	return true;
 }
 
-bool __hidden read_stra(int fd, char const **dst, size_t *len)
+bool _hidden_ read_stra(int fd, char const **dst, size_t *len)
 {
 	uint32_t	slen;
 	char		*buf;
@@ -122,7 +118,7 @@ out:
 	return true;
 }
 
-bool __hidden write_all(int fd, void const *src, size_t len)
+bool _hidden_ write_all(int fd, void const *src, size_t len)
 {
 	while (len > 0) {
 		ssize_t	l = write(fd, src, len);
@@ -144,7 +140,7 @@ bool __hidden write_all(int fd, void const *src, size_t len)
 	return len == 0;
 }
 
-bool __hidden write_str(int fd, char const *src, ssize_t len)
+bool _hidden_ write_str(int fd, char const *src, ssize_t len)
 {
 	uint32_t	slen;
 

@@ -14,10 +14,7 @@
 #include "compiler.h"
 
 #include "xalloc.h"
-
-#ifndef __hidden
-#  define __hidden __attribute__((__visibility__("hidden")))
-#endif
+#include "compiler.h"
 
 static struct {
 	char const	*key;
@@ -51,8 +48,8 @@ static bool is_valid_lang(char const *lang, size_t len)
 	return true;
 }
 
- __hidden void http_set_locale(char const *lang, char const *domain,
-			       char const *localedir)
+_hidden_ void http_set_locale(char const *lang, char const *domain,
+			      char const *localedir)
 {
 	char const	*i18n_teststr = "";
 	char		*lcbuf = NULL;

@@ -8,14 +8,11 @@
 #include <stdio.h>
 
 #include "xalloc.h"
-
-#ifndef __hidden
-#  define __hidden __attribute__((__visibility__("hidden")))
-#endif
+#include "compiler.h"
 
 #define HEX	"0123456789abcdef"
 
-__hidden char const *ldap_escape_query(char const *s, ssize_t cnt)
+_hidden_ char const *ldap_escape_query(char const *s, ssize_t cnt)
 {
 	char		*buf;
 	char		*d;
@@ -52,7 +49,7 @@ __hidden char const *ldap_escape_query(char const *s, ssize_t cnt)
 	return buf;
 }
 
-__hidden char const *ldap_error_string(LDAP *ldp)
+_hidden_ char const *ldap_error_string(LDAP *ldp)
 {
 	char	*res;
 	char	*msg = NULL;

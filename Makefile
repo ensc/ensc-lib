@@ -45,16 +45,32 @@ COMPONENT_io = \
   io.c \
   io.h \
 
+COMPONENT_iniparser = \
+  iniparser.c \
+  iniparser.h \
+  $(COMPONENT_i18n) \
+  $(COMPONENT_xalloc) \
+  $(COMPONENT_compiler)
+
+COMPONENT_i18n = \
+  i18n.h
+
 COMPONENT_http = \
   http-i18n.c \
   http-i18n.h \
- $(COMPONENT_xalloc) \
+  $(COMPONENT_xalloc) \
+
+COMPONENT_logging = \
+  logging.c \
+  logging.h \
+  $(COMPONENT_compiler) \
 
 COMPONENT_ldap = \
   ldap-open.c \
   ldap.c \
   ldap.h \
   $(COMPONENT_mgmmem) \
+  $(COMPONENT_compiler) \
   $(COMPONENT_xalloc)
 
 COMPONENT_mgmmem = \
@@ -64,6 +80,9 @@ COMPONENT_mgmmem = \
 
 COMPONENT_build-simple = \
   build-simple.mk \
+
+COMPONENT_safe_calloc = \
+  safe_calloc.h
 
 COMPONENT_xalloc = \
   xalloc.h
@@ -80,6 +99,12 @@ COMPONENT_serialize = \
 COMPONENT_unserialize = \
   unserialize.h \
   $(COMPONENT_strbuf)
+
+COMPONENT_systemd = \
+  sd-notify.h \
+  sd-notify.c \
+  sd-notifyf.c \
+  $(COMPONENT_compiler)
 
 -include $(D)/setup.mk
 

@@ -13,6 +13,7 @@
 struct ensc_ldap_ctx {
 	int	(*init)(LDAP *ldp, void *);
 
+	char	*mechanism;
 	char	*err_msg;
 	void	*priv;
 };

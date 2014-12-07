@@ -16,10 +16,7 @@
 #include <et/com_err.h>
 
 #include "xalloc.h"
-
-#ifndef __hidden
-#  define __hidden __attribute__((__visibility__("hidden")))
-#endif
+#include "compiler.h"
 
 static void xasprintf(struct ensc_ldap_ctx *ctx, char const *fmt, ...)
 {
@@ -41,15 +38,17 @@ static void xasprintf(struct ensc_ldap_ctx *ctx, char const *fmt, ...)
 	}
 }
 
-static int init_ldap(LDAP *ldp)
+static int init_ldap(LDAP *ldp, struct ensc_ldap_ctx *ctx)
 {
 	int		rc;
 	int const	opt_version = 3;
-	char const	*opt_mech = "GSSAPI";
 
 	rc = ldap_set_option(ldp, LDAP_OPT_PROTOCOL_VERSION, &opt_version);
+
 	if (rc >= 0 && 0)
-		rc = ldap_set_option(ldp, LDAP_OPT_X_SASL_MECH, &opt_mech);
+		rc = ldap_set_option(ldp, LDAP_OPT_X_SASL_MECH,
+				     strcmp(ctx->mechanism, "SIMPLE") == 0 ?
+				     LDAP_SASL_SIMPLE : ctx->mechanism);
 	if (rc >= 0 && 0)
 		rc = ldap_set_option(ldp, LDAP_OPT_X_SASL_REALM, "");
 	if (rc >= 0 && 0)
@@ -117,11 +116,10 @@ static LDAP *open_ldap(char const *ldap_dn, struct ensc_ldap_ctx *ctx)
 	if (ctx && ctx->init)
 		rc = ctx->init(ldp, ctx->priv);
 	else
-		rc = init_ldap(ldp);
+		rc = init_ldap(ldp, ctx);
 
 	if (rc < 0) {
-		xasprintf(ctx, "init_ldap(): %s",
-			  ldap_err2string(rc));
+		xasprintf(ctx, "init_ldap(): %s", ldap_err2string(rc));
 		ldap_destroy(ldp);
 		ldp = NULL;
 		goto out;
@@ -144,7 +142,7 @@ static int ldap_bind_fn(LDAP *ldp, unsigned flags, void *priv, void *interact_v)
 	return LDAP_SUCCESS;
 }
 
- __hidden LDAP *ensc_ldap_connect(char const *uri, struct ensc_ldap_ctx *ctx)
+ _hidden_ LDAP *ensc_ldap_connect(char const *uri, struct ensc_ldap_ctx *ctx)
 {
 	LDAP	*ldap;
 	int	rc;
@@ -153,11 +151,23 @@ static int ldap_bind_fn(LDAP *ldp, unsigned flags, void *priv, void *interact_v)
 	if (!ldap)
 		return NULL;
 
-	rc = ldap_sasl_interactive_bind_s(ldap, NULL, NULL,
-					  NULL, NULL, LDAP_SASL_QUIET,
-					  ldap_bind_fn, NULL);
+	if (ctx && ctx->mechanism && strcmp(ctx->mechanism, "SIMPLE") == 0) {
+		struct berval cred = {
+			.bv_val = "",
+			.bv_len = 0,
+		};
+
+		rc = ldap_sasl_bind_s(ldap, NULL, LDAP_SASL_SIMPLE, &cred,
+				      NULL, NULL, NULL);
+	} else {
+		rc = ldap_sasl_interactive_bind_s(ldap, NULL,
+						  ctx ? ctx->mechanism : NULL,
+						  NULL, NULL, LDAP_SASL_QUIET,
+						  ldap_bind_fn, NULL);
+	}
+
 	if (rc < 0) {
-		xasprintf(ctx, "ldap_sasl_interactive_bind_s(): %s",
+		xasprintf(ctx, "ldap_sasl_*_bind_s(): %s",
 			  ldap_err2string(rc));
 		goto out;
 	}

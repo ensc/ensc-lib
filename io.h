@@ -2,6 +2,7 @@
  * Copyright (C) 2013 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
 @PROJECT_LICENSE@
  */
+
 #ifndef H_ENSC_LIB_IO_H
 #define H_ENSC_LIB_IO_H
 
