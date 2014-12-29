@@ -35,6 +35,7 @@ extern int	_log_fd;
 
 void		_log_pop(void);
 void		_log_push(void);
+void		_log_reset(void);
 unsigned int	_log_get_debug_level(unsigned int domain) _pure_;
 
 void    	_log_msg(unsigned int lvl, unsigned int domain,

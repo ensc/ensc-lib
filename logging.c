@@ -36,6 +36,11 @@ void _hidden_ _log_push(void)
 	++intent_level;
 }
 
+void _hidden_ _log_reset(void)
+{
+	intent_level = 0;
+}
+
 static char const	*get_color(unsigned int lvl)
 {
 	static int	is_tty = -1;
