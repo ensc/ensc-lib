@@ -6,6 +6,13 @@ XZ = xz
 PKG_CONFIG = pkg-config
 XXD = xxd
 
+CLANG = clang
+CLANG_ANALYZE = ${CLANG} --analyze
+
+CPPCHECK = cppcheck
+
+CHECKERS ?= cc clang cppcheck
+
 BUILD_CC = $(CC)
 BUILD_CFLAGS ?= $(CFLAGS)
 BUILD_CPPFLAGS ?= $(CPPFLAGS)
@@ -170,3 +177,68 @@ dist:	$(addprefix $$(PACKAGE)-$$(VERSION).tar,$1)
 $$(PACKAGE)-$$(VERSION).tar:	$2 $$(MAKEFILE_LIST)
 	$(call _createtarball,$$@,$$(PACKAGE)-$$(VERSION),$$(sort $$(abspath $$^)))
 endef
+
+################
+
+define _checkrules
+
+check:			$$(foreach s,$$(filter %.c,$$(sort $1)),check-syntax_$${s})
+
+check-syntax:		$$(foreach c,$${CHECKERS}, check-syntax-$$c)
+check-syntax-cc:	.check-syntax-cc_ALL
+check-syntax-clang:	.check-syntax-clang_ALL
+check-syntax-cppcheck:	.check-syntax-cppcheck_ALL
+
+$$(addprefix check-syntax_,$$(sort $1)):check-syntax_%:\
+	$$(foreach c,$${CHECKERS}, .check-syntax-$$c_%)
+
+_check_rule = \
+	$$(addprefix .check-syntax-$$1_,$$(sort $1)):.check-syntax-$$1_%
+
+
+##
+
+_check_exec_cc = \
+	$$(CC) $$(call _buildflags,C) -o /dev/null -c $$1
+
+.check-syntax-cc_ALL:		$${CHK_SOURCES}
+	$$(call _check_exec_cc,$$^)
+
+$$(call _check_rule,cc):	%
+	$$(call _check_exec_cc,$$^)
+
+##
+
+_check_clang_flags = \
+	$$(filter-out -f%,\
+	$$(filter-out -W%,$$(call _buildflags,$$1))) \
+
+_check_exec_clang = \
+	$$(CLANG_ANALYZE) $$(call _check_clang_flags,C) -DNDEBUG -o /dev/null -c $$1
+
+.check-syntax-clang_ALL:	$${CHK_SOURCES}
+	$$(call _check_exec_clang,$$^)
+
+$$(call _check_rule,clang):	%
+	$$(call _check_exec_clang,$$^)
+
+##
+
+_check_cppcheck_flags = \
+	$$(filter-out -f%,\
+	$$(filter-out -std%,\
+	$$(filter-out -O%,\
+	$$(filter-out -g%,\
+	$$(filter-out -W%,$$(call _buildflags,$$1)))))) \
+
+_check_exec_cppcheck = \
+	$$(CPPCHECK) $$(call _check_cppcheck_flags,C) -DNDEBUG -D_lint $$1
+
+.check-syntax-cppcheck_ALL:	$${CHK_SOURCES}
+	$$(call _check_exec_cppcheck,$$^)
+
+$$(call _check_rule,cppcheck):	%
+	$$(call _check_exec_cppcheck,$$^)
+endef
+
+################
