@@ -28,6 +28,9 @@ MKDIR_P = install -d -m 0755
 INSTALL_DATA = $(INSTALL) -m 0644
 INSTALL_PROG = $(INSTALL) -m 0755
 
+C_FLTO = -flto
+LD_FLTO = -fuse-linker-plugin ${C_FLTO}
+
 abs_top_builddir = $(abspath ./)
 
 _createtarball = $(TAR) cf $1 $(TARFLAGS) $(if $2,-P --transform='s!^(($(abs_top_srcdir))|($(abs_top_builddir)/?))?!$2/!x') $3
