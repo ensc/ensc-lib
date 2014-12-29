@@ -38,9 +38,9 @@ void		_log_push(void);
 void		_log_reset(void);
 unsigned int	_log_get_debug_level(unsigned int domain) _pure_;
 
-void    	_log_msg(unsigned int lvl, unsigned int domain,
+void		_log_msg(unsigned int lvl, unsigned int domain,
 			 char const *fn, unsigned int line,
-			 char const *fmt, ...) 
+			 char const *fmt, ...)
 	__attribute__((__format__(printf, 5, 6)));
 
 inline static bool _pure_ log_enabled(unsigned int lvl, unsigned int domain)
@@ -87,7 +87,7 @@ inline static void	_trace_destructor(bool *flag)
 		if (log_enabled(_lvl, _dom))			\
 			_fn(__VA_ARGS__);	\
 	} while (0)
-	
+
 #define log_pop(_lvl, _dom)		       \
 	LOG_SET_BLOCK_FLAG(_lvl, _dom, false); \
 	LOG_WRAP(_lvl, _dom, _log_pop)
