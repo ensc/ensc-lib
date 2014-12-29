@@ -90,7 +90,7 @@ void _log_msg(unsigned int lvl, unsigned int domain,
 	if ((lvl & L_POP))
 		_log_pop();
 
-	flock(_log_fd, LOCK_EX);
+	lockf(_log_fd, F_LOCK, 0);
 
 	if (!(lvl & L_NOTM)) {
 		char	fn_buf[128];
@@ -131,7 +131,7 @@ void _log_msg(unsigned int lvl, unsigned int domain,
 	if (!(lvl & L_NONL))
 		dprintf(_log_fd, "\n");
 
-	flock(_log_fd, LOCK_UN);
+	lockf(_log_fd, F_ULOCK, 0);
 
 	if ((lvl & L_PUSH))
 		_log_push();
