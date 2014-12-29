@@ -49,6 +49,7 @@ libdir = $(prefix)/lib
 libexecdir = $(prefix)/libexec
 datadir = $(prefix)/share
 localedir = $(datadir)/locale
+sysconfdir = ${prefix}/etc
 
 localstatedir = $(prefix)/var
 
