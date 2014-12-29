@@ -17,6 +17,8 @@ BUILD_CC = $(CC)
 BUILD_CFLAGS ?= $(CFLAGS)
 BUILD_CPPFLAGS ?= $(CPPFLAGS)
 
+GENGETOPT = gengetopt
+
 MSGFMT = msgfmt
 XGETTEXT = xgettext
 MSGMERGE = msgmerge
