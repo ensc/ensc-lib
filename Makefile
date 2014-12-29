@@ -52,6 +52,10 @@ COMPONENT_iniparser = \
   $(COMPONENT_xalloc) \
   $(COMPONENT_compiler)
 
+COMPONENT_iniparser-pwdb = \
+  iniparser-pwdb.c \
+  $(COMPONENT_iniparser)
+
 COMPONENT_i18n = \
   i18n.h
 
