@@ -31,7 +31,9 @@ INSTALL_PROG = $(INSTALL) -m 0755
 C_FLTO = -flto
 LD_FLTO = -fuse-linker-plugin ${C_FLTO}
 
+srcdir ?= $(dir $(firstword $(MAKEFILE_LIST)))
 abs_top_builddir = $(abspath ./)
+abs_top_srcdir ?= $(dir $(abspath ${srcdir}))
 
 _createtarball = $(TAR) cf $1 $(TARFLAGS) $(if $2,-P --transform='s!^(($(abs_top_srcdir))|($(abs_top_builddir)/?))?!$2/!x') $3
 _buildflags = $(foreach k,CPP $1 LD, $(AM_$2$kFLAGS) $($2$kFLAGS) $($kFLAGS_$@))
