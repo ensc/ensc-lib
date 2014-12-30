@@ -44,6 +44,7 @@ COMPONENT_list = \
 COMPONENT_io = \
   io.c \
   io.h \
+  $(COMPONENT_compiler) \
 
 COMPONENT_iniparser = \
   iniparser.c \
