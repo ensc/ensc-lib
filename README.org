@@ -1,0 +1,18 @@
+* About
+
+This repository is a set of sources which can be added to other
+projects.  It is *not* a shared or static library and can not be
+installed on its own.
+
+
+* License
+
+I grant permissions to use the sources of this repository in every
+GPLv3 licensed project.
+
+
+* Patches
+
+Patches are welcome but can be accepted only, when I can relicense them
+to arbitrary licenses (sources are used in projects with proprietary
+licenses).
