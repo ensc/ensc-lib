@@ -69,8 +69,10 @@ _hidden_ char *mgmmem_printf(struct mgmmem_pool *pool, char const *fmt, ...)
 	rc = vasprintf(&buf, fmt, ap);
 	va_end(ap);
 
-	if (rc < 0)
-		buf = NULL;
+	if (rc < 0) {
+		pool->flags |= MGMMEM_POOL_BAD_ALLOC;
+		return NULL;
+	}
 
 	return mgmmem_xfer(pool, buf);
 }
