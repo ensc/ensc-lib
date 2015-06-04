@@ -33,7 +33,7 @@ _hidden_ bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr)
 
 	if (!ptr) {
 		pool->flags |= MGMMEM_POOL_NULL_PTR;
-		return NULL;
+		return true;
 	}
 
 	if (pool->num_entries < pool->cnt_allocated) {
