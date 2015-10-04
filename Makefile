@@ -111,6 +111,11 @@ COMPONENT_systemd = \
   sd-notifyf.c \
   $(COMPONENT_compiler)
 
+COMPONENT_ipaddress = \
+  ipaddress.c \
+  ipaddress.h \
+  $(COMPONENT_compiler)
+
 -include $(D)/setup.mk
 
 _SED_COMMAND = $(foreach c,$(CUSTOMIZATIONS),$(CUSTOMIZATION_$c) )
@@ -129,6 +134,6 @@ $(addprefix $D/,$(_COMPONENT)):$D/%:	% Makefile | $D
 	@test ! -e $@.patch
 	@rm -f $@.tmp
 	sed ${_SED_COMMAND} $< > $@.tmp
-	test -e $@ && diff -u $@ $@.tmp > $@.patch || :
+	test -e $@ && diff -u --label 'a/${@F}' --label 'b/${@F}' $@.tmp $@ > $@.patch || :
 	test -s $@.patch || rm -f $@.patch
 	@if cmp $@.tmp $@; then rm $@.tmp; else mv $@.tmp $@; fi
