@@ -206,8 +206,11 @@ _check_rule = \
 
 ##
 
+_check_cc_flags = \
+	$$(filter-out -Werror,$$(call _buildflags,$$1))
+
 _check_exec_cc = \
-	$$(CC) $$(call _buildflags,C) -o /dev/null -c $$1
+	$$(CC) $$(call _check_cc_flags,C) -o /dev/null -c $$1
 
 .check-syntax-cc_ALL:		$${CHK_SOURCES}
 	$$(call _check_exec_cc,$$^)
