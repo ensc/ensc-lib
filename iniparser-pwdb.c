@@ -22,6 +22,15 @@
 #include "compiler.h"
 #include "logging.h"
 
+static char const *_iniparser_getstring(struct _dictionary_ const *cfg,
+					char const *key,
+					char const *dflt)
+{
+	return iniparser_getstring(const_cast(struct _dictionary_ *)(cfg),
+				   key,
+				   const_cast(char *)(dflt));
+}
+
 static bool is_number(unsigned long *v, char const *str)
 {
 	char		*err;
@@ -37,7 +46,7 @@ bool _hidden_ iniparser_getuser(struct _dictionary_ *dict,
 				uid_t *uid, gid_t *gid,
 				char const *key, bool is_critical)
 {
-	char const	*tmp = iniparser_getstring(dict, key, NULL);
+	char const	*tmp = _iniparser_getstring(dict, key, NULL);
 	unsigned long	res;
 
 	if (!tmp)
@@ -70,7 +79,7 @@ bool _hidden_ iniparser_getuser(struct _dictionary_ *dict,
 bool iniparser_getgroup(struct _dictionary_ *dict, gid_t *gid,
 			char const *key, bool is_critical)
 {
-	char const	*tmp = iniparser_getstring(dict, key, NULL);
+	char const	*tmp = _iniparser_getstring(dict, key, NULL);
 	unsigned long	res;
 
 	if (!tmp)

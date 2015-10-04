@@ -14,12 +14,20 @@
 #include "xalloc.h"
 #include "compiler.h"
 
+static char const *_iniparser_getstring(struct _dictionary_ const *cfg,
+					char const *key,
+					char const *dflt)
+{
+	return iniparser_getstring(const_cast(struct _dictionary_ *)(cfg),
+				   key,
+				   const_cast(char *)(dflt));
+}
+
 char const *iniparser_getstring_exp(struct _dictionary_ *cfg,
 				    char const *key,
 				    char const *dflt)
 {
-	char const	*tmp = iniparser_getstring(cfg, key,
-						   const_cast(char *)(dflt));
+	char const	*tmp = _iniparser_getstring(cfg, key, dflt);
 	int		rc;
 	wordexp_t	p;
 	char const	*msg;
