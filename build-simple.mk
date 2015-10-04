@@ -260,3 +260,31 @@ endef
 
 ################
 
+## Usage: $(call build_ggo,<basename>)
+define build_ggo
+$1-cmdline.o:	$1-cmdline.c $1-cmdline.h
+	$$(CC) $${CFLAGS_GENGETOPT} $$(call _buildflags,C) $$(filter %.c,$$^) -c -o $$@
+
+$1-cmdline.c $1-cmdline.h:	$$(dir $1).$$(notdir $1)-cmdline.stamp
+
+$1.ggo:	$1.ggo.in | $$(dir $1).dirstamp
+
+clean:	_clean-ggo-$1
+
+_clean-ggo-$1:
+	rm -f $1-cmdline.c $1-cmdline.h $1-cmdline.o $1.ggo
+	rm -f $$(dir $1).dirstamp $$(dir $1).$$(notdir $1)-cmdline.stamp
+	rmdir $$(dir $1) 2>/dev/null || :
+endef
+
+CFLAGS_GENGETOPT = -I . -Wno-unused-but-set-variable
+
+.%-cmdline.stamp:	%.ggo
+	$(GENGETOPT) -i $< -F $*-cmdline
+	@touch $@
+
+%.ggo:	%.ggo.in
+	-rm -f $@ $@.tmp
+	$(SED) $(SED_CMD) $< >$@.tmp </dev/null
+	chmod a-w $@.tmp
+	mv $@.tmp $@
