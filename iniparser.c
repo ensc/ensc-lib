@@ -23,9 +23,9 @@ static char const *_iniparser_getstring(struct _dictionary_ const *cfg,
 				   const_cast(char *)(dflt));
 }
 
-char const *iniparser_getstring_exp(struct _dictionary_ *cfg,
-				    char const *key,
-				    char const *dflt)
+_hidden_ char const *iniparser_getstring_exp(struct _dictionary_ *cfg,
+					     char const *key,
+					     char const *dflt)
 {
 	char const	*tmp = _iniparser_getstring(cfg, key, dflt);
 	int		rc;
