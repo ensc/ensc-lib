@@ -36,7 +36,7 @@ _hidden_ char const *iniparser_getstring_exp(struct _dictionary_ *cfg,
 		rc = -1;
 		msg = N_("failed to get string");
 	} else {
-		rc = wordexp(tmp, &p, WRDE_NOCMD | WRDE_UNDEF);	
+		rc = wordexp(tmp, &p, WRDE_NOCMD | WRDE_UNDEF);
 
 		switch (rc) {
 		case WRDE_BADCHAR:
@@ -66,14 +66,14 @@ _hidden_ char const *iniparser_getstring_exp(struct _dictionary_ *cfg,
 	}
 
 	if (rc != 0) {
-		com_err(__func__, 0, 
+		com_err(__func__, 0,
 			N_("failed to get '%s' (--> '%s') configuration option: %s\n"),
 			key, tmp, msg);
 		return NULL;
 	}
 
 	if (p.we_wordc != 1) {
-		com_err(__func__, 0, 
+		com_err(__func__, 0,
 			N_("ambiguous expansion for '%s' (--> '%s'): %zu values\n"),
 			key, tmp, p.we_wordc);
 		tmp = NULL;
