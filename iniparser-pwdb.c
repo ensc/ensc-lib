@@ -42,7 +42,7 @@ static bool is_number(unsigned long *v, char const *str)
 		 (*err && !isspace(*err)));
 }
 
-bool _hidden_ iniparser_getuser(struct _dictionary_ *dict,
+bool _hidden_ iniparser_getuser(struct _dictionary_ const *dict,
 				uid_t *uid, gid_t *gid,
 				char const *key, bool is_critical)
 {
@@ -76,7 +76,7 @@ bool _hidden_ iniparser_getuser(struct _dictionary_ *dict,
 	return true;
 }
 
-bool iniparser_getgroup(struct _dictionary_ *dict, gid_t *gid,
+bool iniparser_getgroup(struct _dictionary_ const *dict, gid_t *gid,
 			char const *key, bool is_critical)
 {
 	char const	*tmp = _iniparser_getstring(dict, key, NULL);
