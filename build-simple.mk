@@ -253,3 +253,10 @@ $$(call _check_rule,cppcheck):	%
 endef
 
 ################
+
+%/.dirstamp:
+	${MKDIR_P} -p '${@D}'
+	@touch '$@'
+
+################
+
