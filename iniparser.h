@@ -22,4 +22,23 @@ bool iniparser_getuser(struct _dictionary_ const *cfg, uid_t *uid, gid_t *gid,
 bool iniparser_getgroup(struct _dictionary_ const *cfg, gid_t *gid,
 			char const *key, bool is_critical);
 
+char const *iniparser_getsecstring(struct _dictionary_ const *cfg,
+				   char const *sec,
+				   char const *key,
+				   char const *dflt);
+
+char const *iniparser_getsecstring_exp(struct _dictionary_ const *cfg,
+				       char const *sec,
+				       char const *key,
+				       char const *dflt) _malloc_;
+
+int iniparser_getsecboolean(struct _dictionary_ const *cfg,
+			    char const *sec, char const *id, int notfound);
+
+int iniparser_getsecint(struct _dictionary_ const *cfg,
+			char const *sec, const char * key, int notfound);
+
+int iniparser_getsecint_exp(struct _dictionary_ const *cfg,
+			    char const *sec, char const *id, int notfound);
+
 #endif	/* H_ENSC_LIB_INIPARSER_H */
