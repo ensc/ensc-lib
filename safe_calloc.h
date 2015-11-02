@@ -61,7 +61,7 @@ inline static int _sizeof_flexarr(
 }
 
 #define sizeof_flexarr(_res, _s, _n, _attr)			\
-	_sizeof_flexarr(_res, sizeof(_s), _n, sizeof(_s)._attr)
+	_sizeof_flexarr(_res, sizeof(_s), _n, sizeof(_s)._attr[0])
 
 inline static void *_malloc_flexarr(size_t sz0, size_t cnt, size_t sz1)
 {
