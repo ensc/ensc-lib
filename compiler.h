@@ -132,5 +132,12 @@
 # error "Unsupporter compiler"
 #endif
 
+#ifndef HAVE_BUILTIN_MUL_OVERFLOW
+#  define HAVE_BUILTIN_MUL_OVERFLOW	0
+#endif
+
+#ifndef HAVE_BUILTIN_SUB_OVERFLOW
+#  define HAVE_BUILTIN_SUB_OVERFLOW	0
+#endif
 
 #endif	/* H_UTUN_USB_COMPILER_H */

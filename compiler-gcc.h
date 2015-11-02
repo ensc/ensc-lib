@@ -81,4 +81,12 @@
 		(_type)(_tmp);			\
 	})
 
+#ifdef __clang
+#  define HAVE_BUILTIN_MUL_OVERFLOW	(__has_attribute(__builtin_mul_overflow))
+#  define HAVE_BUILTIN_SUB_OVERFLOW	(__has_attribute(__builtin_sub_overflow))
+#elif __GNUC__ >= 5
+#  define HAVE_BUILTIN_MUL_OVERFLOW	1
+#  define HAVE_BUILTIN_SUB_OVERFLOW	1
+#endif
+
 #endif	/* H_UTUN_INCLUDE_COMPILER_GCC_H */
