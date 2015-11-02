@@ -1,7 +1,8 @@
 TESTS = \
 	ipaddress \
 	serialize \
-	iniparser
+	iniparser \
+	safe_calloc
 
 CFLAGS = \
 	--std=gnu99 -Wall -W -pedantic -Werror \
@@ -21,3 +22,5 @@ serialize:	serialize.c
 
 iniparser:	LDLIBS=-liniparser -lcom_err
 iniparser:	iniparser.c ../iniparser.c ../iniparser-pwdb.c ../iniparser.h
+
+safe_calloc:	safe_calloc.c ../safe_calloc.h
