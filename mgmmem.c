@@ -11,7 +11,7 @@
 #include "compiler.h"
 
 #include "xalloc.h"
-#include "compiler.h"
+#include "safe_calloc.h"
 
 struct mgmmem_entry {
 	void const	*ptr;
@@ -38,10 +38,12 @@ _hidden_ bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr)
 
 	if (pool->num_entries < pool->cnt_allocated) {
 		tmp = pool->entries;
+	} else if (pool->num_entries > SIZE_MAX / 150) {
+		alloc_error(__func__, __FILE__, __LINE__, __func__);
 	} else {
 		size_t	new_cnt = pool->num_entries * 150 / 100 + 2;
 
-		tmp = Xrealloc(pool->entries, new_cnt * sizeof *tmp);
+		tmp = Xrecalloc(pool->entries, new_cnt, sizeof *tmp);
 
 		pool->entries = tmp;
 		pool->cnt_allocated = new_cnt;
