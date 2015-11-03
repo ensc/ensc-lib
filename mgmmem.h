@@ -37,7 +37,7 @@ bool _mgmmem_xfer(struct mgmmem_pool *pool, void const *ptr);
 char *mgmmem_printf(struct mgmmem_pool *pool, char const *fmt, ...)
 	__attribute__((__format__(printf, 2, 3)));
 
-#define mgmmem_xfer(_pool, _ptr) \
+#define mgmmem_xfer(_pool, _ptr) __extension__ \
 	({							\
 		__typeof__(_ptr)	_tmp = (_ptr);		\
 		if (!_mgmmem_xfer(_pool, _tmp))			\
