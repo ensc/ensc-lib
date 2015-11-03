@@ -3,7 +3,8 @@ TESTS = \
 	serialize \
 	iniparser \
 	safe_calloc \
-	mgmmem
+	mgmmem \
+	strbuf
 
 CFLAGS = \
 	--std=gnu99 -Wall -W -pedantic -Werror \
@@ -25,6 +26,7 @@ iniparser:	LDLIBS=-liniparser -lcom_err
 iniparser:	iniparser.c ../iniparser.c ../iniparser-pwdb.c ../iniparser.h
 
 safe_calloc:	safe_calloc.c ../safe_calloc.h
+strbuf:		strbuf.c ../strbuf.h
 
 mgmmem:		LDLIBS=-lcom_err
 mgmmem:		mgmmem.c ../mgmmem.h ../mgmmem.c
