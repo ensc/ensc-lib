@@ -6,19 +6,26 @@
 #include "ldap.h"
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "xalloc.h"
 #include "compiler.h"
 
 #define HEX	"0123456789abcdef"
 
-_hidden_ char const *ldap_escape_query(char const *s, ssize_t cnt)
+_hidden_ char const *ldap_escape_query(char const *s, ssize_t cnt_)
 {
 	char		*buf;
 	char		*d;
+	size_t		cnt;
 
-	if (cnt == -1)
+	if (cnt_ == -1)
 		cnt = strlen(s);
+	else
+		cnt = cnt_;
+
+	if (cnt > (SIZE_MAX - 1u) / 3u)
+		alloc_error(__func__, __FILE__, __LINE__, __func__);
 
 	buf = Xmalloc(cnt * 3 + 1);
 
