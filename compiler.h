@@ -140,4 +140,8 @@
 #  define HAVE_BUILTIN_SUB_OVERFLOW	0
 #endif
 
+#ifndef COMPILER_HAS_C11_GENERIC
+#  define COMPILER_HAS_C11_GENERIC	0
+#endif
+
 #endif	/* H_UTUN_USB_COMPILER_H */
