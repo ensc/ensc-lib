@@ -124,6 +124,11 @@
 #define stringify(_m)	#_m
 #define stringify2(_m)	stringify(_m)
 
+#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 201112L
+#  define _Static_assert(_cond, _msg) \
+	BUILD_BUG_ON(!(_cond))
+#endif
+
 #ifdef _lint
 # include "compiler-lint.h"
 #elif defined(__GNUC__) || defined(__clang__)
