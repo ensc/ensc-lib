@@ -97,4 +97,11 @@ ENSC_SYSTEMD_FN(int sd_notifyf(int unset_environment,
 		_sd_printf_attr_(2,3),
 		return 0);
 
+#if 0
+{
+#endif
+#ifdef __cplusplus
+}
+#endif
+
 #endif	/* H_ENSC_SD_NOTIFY_H */
