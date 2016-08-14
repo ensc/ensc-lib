@@ -108,10 +108,13 @@ COMPONENT_unserialize = \
 
 COMPONENT_systemd = \
   sd-common.h \
+  sd-listen.h \
+  sd-listen.c \
   sd-notify.h \
   sd-notify.c \
   sd-notifyf.c \
-  $(COMPONENT_compiler)
+  $(COMPONENT_compiler) \
+  $(COMPONENT_typeutils)
 
 COMPONENT_ipaddress = \
   ipaddress.c \
