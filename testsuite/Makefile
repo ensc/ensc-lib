@@ -40,3 +40,6 @@ mgmmem:		mgmmem.c ../mgmmem.h ../mgmmem.c
 sd-misc:	sd-misc.c
 
 type-utils:	type-utils.c ../type-utils.h
+
+$(TESTS):
+	$(CC) $(CFLAGS) $(LDFLAGS) $(filter %.c,$^) -o $@ $(LDLIBS)
