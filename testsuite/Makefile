@@ -9,8 +9,10 @@ TESTS = \
 	type-utils \
 	unserialize \
 
+STD =	gnu11
+
 CFLAGS = \
-	--std=gnu99 -Wall -W -pedantic -Werror \
+	--std=$(STD) -Wall -W -pedantic -Werror \
 	-Wno-pointer-arith -Wno-unused-parameter \
 	-O2 -g3 \
 	-DFORTIFY_SOURCE=2 -D_GNU_SOURCE
