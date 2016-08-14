@@ -14,6 +14,18 @@
 
 #include "xalloc.h"
 
+struct strbuf_const {
+	char const	*b;
+	size_t		len;
+};
+
+inline static void strbuf_const_assign(struct strbuf_const *buf,
+				       void const *data, size_t len)
+{
+	buf->b = data;
+	buf->len = len;
+}
+
 struct strbuf {
 	size_t	len;
 	size_t	alloc;
