@@ -18,7 +18,7 @@ extern "C" {
 
 #include "sd-common.h"
 
-ENSC_SYSTEMD_FN(int sd_notify_supported(void), return 0)
+ENSC_SYSTEMD_FN(int sd_notify_supported(void),, return 0);
 
 /*
   Informs systemd about changed daemon state. This takes a number of
@@ -69,8 +69,8 @@ ENSC_SYSTEMD_FN(int sd_notify_supported(void), return 0)
 
   See sd_notify(3) for more information.
 */
-ENSC_SYSTEMD_FN(int sd_notify(int unset_environment, const char *state),
-		return 0)
+ENSC_SYSTEMD_FN(int sd_notify(int unset_environment, const char *state),,
+		return 0);
 
 /*
   Similar to sd_notify() but takes a format string.
@@ -93,7 +93,8 @@ ENSC_SYSTEMD_FN(int sd_notify(int unset_environment, const char *state),
   See sd_notifyf(3) for more information.
 */
 ENSC_SYSTEMD_FN(int sd_notifyf(int unset_environment,
-			       const char *format, ...) _sd_printf_attr_(2,3),
+			       const char *format, ...),
+		_sd_printf_attr_(2,3),
 		return 0);
 
 #endif	/* H_ENSC_SD_NOTIFY_H */
