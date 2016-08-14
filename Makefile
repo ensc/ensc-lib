@@ -88,7 +88,8 @@ COMPONENT_build-simple = \
   build-simple.mk \
 
 COMPONENT_safe_calloc = \
-  safe_calloc.h
+  safe_calloc.h \
+  $(COMPONENT_typeutils)
 
 COMPONENT_xalloc = \
   xalloc.h
