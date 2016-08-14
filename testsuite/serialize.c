@@ -14,6 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define UNSERIALIZE_SUPPORT_MEM		1
+#define UNSERIALIZE_SUPPORT_SOCKET	0
+#define UNSERIALIZE_SUPPORT_FD		0
+#define UNSERIALIZE_SUPPORT_GENERIC	0
+
 #include "../unserialize.h"
 #include "../serialize.h"
 
@@ -36,7 +41,7 @@ void alloc_error(char const *src_func, char const *file, unsigned int line,
 	abort();
 }
 
-static void test0(struct unserialize_stream *u)
+static void test0(struct unserialize_stream_mem *u)
 {
 	char		buf[128];
 	size_t		l = sizeof buf;
@@ -57,15 +62,15 @@ static void test0(struct unserialize_stream *u)
 	assert(strcmp(_buf+1, _exp) == 0);			\
 	assert(memcmp(_buf+1+strlen(_buf), "\1", 1) == 0);	\
 
-	Xunserialize_buf(u, buf, BUF0);
-	Xunserialize_buf(u, buf, BUF1);
-	Xunserialize_buf(u, buf, BUF2);
-	Xunserialize_buf(u, buf, BUF3);
+	Xunserialize_buf(&u->s, buf, BUF0);
+	Xunserialize_buf(&u->s, buf, BUF1);
+	Xunserialize_buf(&u->s, buf, BUF2);
+	Xunserialize_buf(&u->s, buf, BUF3);
 
-	Xunserialize_str(u, buf, STR0);
-	Xunserialize_str(u, buf, STR1);
-	Xunserialize_str(u, buf, STR2);
-	Xunserialize_str(u, buf, STR3);
+	Xunserialize_str(&u->s, buf, STR0);
+	Xunserialize_str(&u->s, buf, STR1);
+	Xunserialize_str(&u->s, buf, STR2);
+	Xunserialize_str(&u->s, buf, STR3);
 
 #undef Xunserialize_str
 #undef Xunserialize_buf
@@ -73,17 +78,17 @@ static void test0(struct unserialize_stream *u)
 	assert(u->cnt == 0);
 }
 
-static void test1(struct unserialize_stream *u)
+static void test1(struct unserialize_stream_mem *u)
 {
 	char				buf[128];
 	size_t				l = sizeof buf;
-	
-	
+
+
 #define Xunserialize_buf(_u, _buf, _exp)			\
 	if (sizeof _exp > 1) {					\
-		struct unserialize_stream	tmp = *u;	\
+		struct unserialize_stream_mem tmp = *u;		\
 		l = sizeof _exp - 2;				\
-		assert(!unserialize_buf(&tmp, _buf, &l));	\
+		assert(!unserialize_buf(&tmp.s, _buf, &l));	\
 	}							\
 	l = sizeof _exp - 1;					\
 	memset(_buf, '\1', sizeof _buf);			\
@@ -96,23 +101,23 @@ static void test1(struct unserialize_stream *u)
 #define Xunserialize_str(_u, _buf, _exp)			\
 	l = sizeof _exp;					\
 	{							\
-		struct unserialize_stream	tmp = *u;	\
-		assert(!unserialize_str(&tmp, buf, l-1));	\
+		struct unserialize_stream_mem tmp = *u;		\
+		assert(!unserialize_str(&tmp.s, buf, l-1));	\
 	}							\
 	memset(_buf, '\1', sizeof _buf);			\
 	assert(unserialize_str(_u, _buf+1, l));			\
 	assert(strcmp(_buf+1, _exp) == 0);			\
 	assert(memcmp(_buf+1+strlen(_buf), "\1", 1) == 0);	\
 
-	Xunserialize_buf(u, buf, BUF0);
-	Xunserialize_buf(u, buf, BUF1);
-	Xunserialize_buf(u, buf, BUF2);
-	Xunserialize_buf(u, buf, BUF3);
+	Xunserialize_buf(&u->s, buf, BUF0);
+	Xunserialize_buf(&u->s, buf, BUF1);
+	Xunserialize_buf(&u->s, buf, BUF2);
+	Xunserialize_buf(&u->s, buf, BUF3);
 
-	Xunserialize_str(u, buf, STR0);
-	Xunserialize_str(u, buf, STR1);
-	Xunserialize_str(u, buf, STR2);
-	Xunserialize_str(u, buf, STR3);
+	Xunserialize_str(&u->s, buf, STR0);
+	Xunserialize_str(&u->s, buf, STR1);
+	Xunserialize_str(&u->s, buf, STR2);
+	Xunserialize_str(&u->s, buf, STR3);
 
 #undef Xunserialize_str
 #undef Xunserialize_buf
@@ -121,7 +126,7 @@ static void test1(struct unserialize_stream *u)
 }
 
 
-static void test2(struct unserialize_stream *u, bool optimize)
+static void test2(struct unserialize_stream_mem *u, bool optimize)
 {
 	struct strbuf	buf = INIT_STRBUF(buf);
 	char const	*str;
@@ -138,15 +143,15 @@ static void test2(struct unserialize_stream *u, bool optimize)
 	assert(*(_len) == sizeof _exp - 1);		\
 	freec(_buf);					\
 
-	Xunserialize_bufa(u, &buf, BUF0);
-	Xunserialize_bufa(u, &buf, BUF1);
-	Xunserialize_bufa(u, &buf, BUF2);
-	Xunserialize_bufa(u, &buf, BUF3);
+	Xunserialize_bufa(&u->s, &buf, BUF0);
+	Xunserialize_bufa(&u->s, &buf, BUF1);
+	Xunserialize_bufa(&u->s, &buf, BUF2);
+	Xunserialize_bufa(&u->s, &buf, BUF3);
 
-	Xunserialize_stra(u, str, &str_len, STR0);
-	Xunserialize_stra(u, str, &str_len, STR1);
-	Xunserialize_stra(u, str, &str_len, STR2);
-	Xunserialize_stra(u, str, &str_len, STR3);
+	Xunserialize_stra(&u->s, str, &str_len, STR0);
+	Xunserialize_stra(&u->s, str, &str_len, STR1);
+	Xunserialize_stra(&u->s, str, &str_len, STR2);
+	Xunserialize_stra(&u->s, str, &str_len, STR3);
 
 #undef Xunserialize_str
 #undef Xunserialize_buf
@@ -159,8 +164,8 @@ static void test2(struct unserialize_stream *u, bool optimize)
 int main(void)
 {
 	struct serialize_stream		s = INIT_SERIALIZE_STREAM(s);
-	struct unserialize_stream	u0;
-	struct unserialize_stream	u1;
+	struct unserialize_stream_mem	u0;
+	struct unserialize_stream_mem	u1;
 
 	serialize_u32(&s, 23);
 	serialize_u64(&s, 42);
@@ -177,22 +182,23 @@ int main(void)
 	serialize_str(&s, STR2);
 	serialize_str(&s, STR3);
 
+	u0.s.type = UNSERIALIZE_SRC_MEM;
 	u0.ptr = s.base;
 	u0.cnt = s.cnt;
 
 	{
 		uint32_t	v;
-		assert(unserialize_u32(&u0, &v) && v == 23);
+		assert(unserialize_u32(&u0.s, &v) && v == 23);
 	}
 
 	{
 		uint64_t	v;
-		assert(unserialize_u64(&u0, &v) && v == 42);
+		assert(unserialize_u64(&u0.s, &v) && v == 42);
 	}
 
 	{
 		time_t		v;
-		assert(unserialize_time_t(&u0, &v) && v == 1);
+		assert(unserialize_time_t(&u0.s, &v) && v == 1);
 	}
 
 	u1 = u0;
