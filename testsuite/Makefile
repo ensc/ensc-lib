@@ -4,6 +4,7 @@ TESTS = \
 	iniparser \
 	safe_calloc \
 	mgmmem \
+	sd-misc \
 	strbuf \
 	type-utils \
 	unserialize \
@@ -33,5 +34,7 @@ strbuf:		strbuf.c ../strbuf.h
 
 mgmmem:		LDLIBS=-lcom_err
 mgmmem:		mgmmem.c ../mgmmem.h ../mgmmem.c
+
+sd-misc:	sd-misc.c
 
 type-utils:	type-utils.c ../type-utils.h

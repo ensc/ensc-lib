@@ -2,6 +2,7 @@
 /ipaddress
 /mgmmem
 /safe_calloc
+/sd-misc
 /serialize
 /strbuf
 /type-utils
