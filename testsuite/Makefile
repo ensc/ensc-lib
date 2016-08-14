@@ -6,6 +6,7 @@ TESTS = \
 	mgmmem \
 	strbuf \
 	type-utils \
+	unserialize \
 
 CFLAGS = \
 	--std=gnu99 -Wall -W -pedantic -Werror \
@@ -22,6 +23,7 @@ ipaddress:	LDLIBS=-lcom_err
 ipaddress:	ipaddress.c ../ipaddress.c ../ipaddress.h
 
 serialize:	serialize.c
+unserialize:	unserialize.c
 
 iniparser:	LDLIBS=-liniparser -lcom_err
 iniparser:	iniparser.c ../iniparser.c ../iniparser-pwdb.c ../iniparser.h

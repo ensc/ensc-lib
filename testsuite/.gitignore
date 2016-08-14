@@ -5,3 +5,4 @@
 /serialize
 /strbuf
 /type-utils
+/unserialize
