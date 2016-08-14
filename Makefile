@@ -117,6 +117,9 @@ COMPONENT_ipaddress = \
   ipaddress.h \
   $(COMPONENT_compiler)
 
+COMPONENT_typeutils = \
+  type-utils.h
+
 -include $(D)/setup.mk
 
 _SED_COMMAND = $(foreach c,$(CUSTOMIZATIONS),$(CUSTOMIZATION_$c) )

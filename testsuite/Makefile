@@ -4,7 +4,8 @@ TESTS = \
 	iniparser \
 	safe_calloc \
 	mgmmem \
-	strbuf
+	strbuf \
+	type-utils \
 
 CFLAGS = \
 	--std=gnu99 -Wall -W -pedantic -Werror \
@@ -30,3 +31,5 @@ strbuf:		strbuf.c ../strbuf.h
 
 mgmmem:		LDLIBS=-lcom_err
 mgmmem:		mgmmem.c ../mgmmem.h ../mgmmem.c
+
+type-utils:	type-utils.c ../type-utils.h
