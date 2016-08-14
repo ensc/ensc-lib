@@ -43,3 +43,6 @@ type-utils:	type-utils.c ../type-utils.h
 
 $(TESTS):
 	$(CC) $(CFLAGS) $(LDFLAGS) $(filter %.c,$^) -o $@ $(LDLIBS)
+
+clean:
+	rm -f ${TESTS}
