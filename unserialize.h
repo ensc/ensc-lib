@@ -231,6 +231,15 @@ inline static bool _unserialize_is_available(struct unserialize_stream *src,
 	}
 }
 
+inline static bool unserialize_u16(struct unserialize_stream *src, uint16_t *v)
+{
+	if (!_unserialize_cpy(src, v, sizeof *v))
+		return false;
+
+	*v = be16toh(*v);
+	return true;
+}
+
 inline static bool unserialize_u32(struct unserialize_stream *src, uint32_t *v)
 {
 	if (!_unserialize_cpy(src, v, sizeof *v))
