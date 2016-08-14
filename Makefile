@@ -107,6 +107,7 @@ COMPONENT_unserialize = \
   $(COMPONENT_strbuf)
 
 COMPONENT_systemd = \
+  sd-common.h \
   sd-notify.h \
   sd-notify.c \
   sd-notifyf.c \

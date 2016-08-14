@@ -16,22 +16,7 @@ extern "C" {
 }
 #endif
 
-
-#ifndef _sd_printf_attr_
-#  if __GNUC__ >= 4
-#    define _sd_printf_attr_(a,b) __attribute__ ((format (printf, a, b)))
-#  else
-#    define _sd_printf_attr_(a,b)
-#  endif
-#endif
-
-#ifndef DISABLE_SYSTEMD
-#  define ENSC_SYSTEMD_FN(_proto, _ret_stmt)		\
-	_proto
-#else
-#  define ENSC_SYSTEMD_FN(_proto, _ret_stmt) \
-	inline static _proto { _ret_stmt; }
-#endif
+#include "sd-common.h"
 
 ENSC_SYSTEMD_FN(int sd_notify_supported(void), return 0)
 
