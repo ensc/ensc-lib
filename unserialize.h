@@ -1,5 +1,5 @@
 /*	--*- c -*--
- * Copyright (C) 2013 Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+ * Copyright (C) 2013,2016 Enrico Scholz <enrico.scholz@ensc.de>
  @PROJECT_LICENSE@
  */
 
