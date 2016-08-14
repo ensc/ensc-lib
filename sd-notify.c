@@ -5,13 +5,13 @@
 Most part of this file were taken from systemd's sd-daemon.c
  */
 
-#ifndef DISABLE_SYSTEMD
-
 #ifndef _GNU_SOURCE
 #  define _GNU_SOURCE
 #endif
 
 #include "sd-notify.h"
+
+#ifndef DISABLE_SYSTEMD
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -22,7 +22,20 @@ Most part of this file were taken from systemd's sd-daemon.c
 #include <unistd.h>
 #include <string.h>
 
+#include <netinet/ip.h>
+#include <sys/un.h>
+
 #include "compiler.h"
+
+union sockaddr_union {
+        struct sockaddr		sa;
+        struct sockaddr_in	in4;
+        struct sockaddr_in6	in6;
+        struct sockaddr_un	un;
+        struct sockaddr_storage storage;
+};
+
+#define offsetof(_type, _attr)	(__builtin_offsetof(_type, _attr))
 
 _hidden_ int sd_notify_supported(void)
 {

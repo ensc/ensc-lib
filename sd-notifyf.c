@@ -21,6 +21,8 @@
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 #include "compiler.h"
 
