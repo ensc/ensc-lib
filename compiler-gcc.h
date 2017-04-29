@@ -92,7 +92,7 @@
 #ifndef __STDC_VERSION__
 #  warning "Unknown C version"
 #elif __STDC_VERSION__ >= 201112L
-#  if __GNUC__ >= 5
+#  if __GNUC__ >= 5 || defined(__clang__)
 #    define COMPILER_HAS_C11_GENERIC	1
 #  endif
 #endif
