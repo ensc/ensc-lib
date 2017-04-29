@@ -11,6 +11,8 @@
 #if COMPILER_HAS_C11_GENERIC
 #  define variable_is_signed(_var) \
 	_Generic(_var,				\
+		 signed char: true,		\
+		 unsigned char: false,		\
 		 int: true,			\
 		 short: true,			\
 		 long: true,			\
