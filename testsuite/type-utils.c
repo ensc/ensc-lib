@@ -21,6 +21,7 @@
 int main(void)
 {
 	BUG_ON(variable_max_value((unsigned char)0)  != UCHAR_MAX);
+	BUG_ON(variable_max_value((unsigned char const)0)  != UCHAR_MAX);
 	BUG_ON(variable_max_value((unsigned short)0) != USHRT_MAX);
 	BUG_ON(variable_max_value((unsigned int)0)   != UINT_MAX);
 	BUG_ON(variable_max_value((unsigned long)0)  != ULONG_MAX);
@@ -107,6 +108,8 @@ int main(void)
 		unsigned char		v;
 
 		BUG_ON(_mul_overflow((unsigned char)1u, (unsigned char)1u, &v));
+		BUG_ON(_mul_overflow((unsigned char const)1u,
+				     (unsigned char const)1u, &v));
 		BUG_ON(!_mul_overflow((unsigned char)10u, (unsigned char)30u, &v));
 	}
 }
