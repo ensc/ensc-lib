@@ -56,7 +56,10 @@
 		 signed long: LONG_MAX,			\
 		 unsigned long: ULONG_MAX,		\
 		 signed long long: LLONG_MAX,		\
-		 unsigned long long: ULLONG_MAX)
+		 unsigned long long: ULLONG_MAX, 	\
+		 float:FLT_MAX,				\
+		 double:DBL_MAX,			\
+		 long double:LDBL_MAX)
 
 #  define variable_min_value(_var)			\
 	_Generic(_var,					\
@@ -70,7 +73,10 @@
 		 signed long: LONG_MIN,			\
 		 unsigned long: 0ul,			\
 		 signed long long: LLONG_MIN,		\
-		 unsigned long long: 0ull)
+		 unsigned long long: 0ull,		\
+		 float:FLT_MIN,				\
+		 double:DBL_MIN,			\
+		 long double:LDBL_MIN)
 #else
 #  define variable_max_value(_var) __extension__			\
 	({								\
