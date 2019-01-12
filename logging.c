@@ -7,6 +7,8 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>
@@ -83,6 +85,11 @@ static char const	*get_color(unsigned int lvl)
 	return "";
 }
 
+char const *  __attribute__((__weak__)) log_transform_fmt(char const *fmt)
+{
+	return strdup(fmt);
+}
+
 void _log_msg(unsigned int lvl, unsigned int domain,
 	      char const *fn, unsigned int line,
 	      char const *fmt, ...)
@@ -133,12 +140,18 @@ void _log_msg(unsigned int lvl, unsigned int domain,
 			intent_level*2, "");
 	}
 
+	fmt = log_transform_fmt(fmt);
+	if (!fmt)
+		abort();
+
 	dprintf(_log_fd, "%s", get_color(lvl & L_MASK_LEVELS));
 	va_start(ap, fmt);
 	errno = orig_errno;		/* restore errno to support %m */
 	vdprintf(_log_fd, fmt, ap);
 	va_end(ap);
 	dprintf(_log_fd, "%s", get_color(0));
+
+	free((void *)fmt);
 
 	if (!(lvl & L_NONL))
 		dprintf(_log_fd, "\n");
