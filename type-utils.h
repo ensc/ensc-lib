@@ -79,7 +79,7 @@
 		if (__is_type(_tmp, char *))				\
 			_variable_max_value_res = CHAR_MAX;		\
 		else if (__is_type(_tmp, signed char *))		\
-			_variable_max_value_res = CHAR_MAX;		\
+			_variable_max_value_res = SCHAR_MAX;		\
 		else if (__is_type(_tmp, unsigned char *))		\
 			_variable_max_value_res = UCHAR_MAX;		\
 		else if (__is_type(_tmp, signed short *))		\
@@ -88,21 +88,21 @@
 			_variable_max_value_res = USHRT_MAX;		\
 		else if (__is_type(_tmp, int *))			\
 			_variable_max_value_res = INT_MAX;		\
-		else if (__is_type(_tmp, signed int *))		\
+		else if (__is_type(_tmp, signed int *))			\
 			_variable_max_value_res = INT_MAX;		\
 		else if (__is_type(_tmp, unsigned int *))		\
 			_variable_max_value_res = UINT_MAX;		\
-		if (__is_type(_tmp, long *))				\
+		else if (__is_type(_tmp, long *))			\
 			_variable_max_value_res = LONG_MAX;		\
 		else if (__is_type(_tmp, signed long *))		\
 			_variable_max_value_res = LONG_MAX;		\
 		else if (__is_type(_tmp, unsigned long *))		\
 			_variable_max_value_res = ULONG_MAX;		\
-		if (__is_type(_tmp, long long *))			\
+		else if (__is_type(_tmp, long long *))			\
 			_variable_max_value_res = LLONG_MAX;		\
-		else if (__is_type(_tmp, signed long long *))	\
+		else if (__is_type(_tmp, signed long long *))		\
 			_variable_max_value_res = LLONG_MAX;		\
-		else if (__is_type(_tmp, unsigned long long *))	\
+		else if (__is_type(_tmp, unsigned long long *))		\
 			_variable_max_value_res = ULLONG_MAX;		\
 		else {							\
 			/* keep _is_signed_res undefined to cause	\
@@ -118,7 +118,7 @@
 		if (__is_type(_tmp, char *))				\
 			_variable_min_value_res = CHAR_MIN;		\
 		else if (__is_type(_tmp, signed char *))		\
-			_variable_min_value_res = CHAR_MIN;		\
+			_variable_min_value_res = SCHAR_MIN;		\
 		else if (__is_type(_tmp, unsigned char *))		\
 			_variable_min_value_res = 0;			\
 		else if (__is_type(_tmp, signed short *))		\
