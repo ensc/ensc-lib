@@ -22,30 +22,24 @@
 #define _hidden_		__attribute__((__visibility__("hidden")))
 #define _malloc_		__attribute__((__malloc__))
 
-#if defined __arm__
-#  define __die_code0(_code) __asm__ __volatile__ (".byte 0xff,0xff,0xff,0xff")
-#  define __die_code1(_code) __asm__ __volatile__ ("bkpt %0" : : "I"((_code) % 256))
-#elif defined NDEBUG
-#  define __die_code0(_code) abort()
-#  define __die_code1(_code) abort(0)
-#else
-#  define __die_code0(_code) (*(int volatile *)0 = __LINE__)
-#  define __die_code1(_code) (*(int volatile *)0 = __LINE__)
-#endif
-
 #ifndef DEBUG
-#define __do_die(_code) do {						\
-		__die_code0(_code);					\
-		__builtin_unreachable();				\
+#  define __do_die(_code)			\
+	do {					\
+                __builtin_trap();               \
+        } while (1 == 1)
+#elif defined(__arm__)
+#  define __do_die(_code)					\
+	do {							\
+		__asm__ __volatile__ ("bkpt %0\n"		\
+				      : : "I"((_code) % 256)	\
+				      : "memory");		\
+		__builtin_unreachable();			\
 	} while (1 == 1)
 #else
-#define __do_die(_code) do {						\
-		__die_code1(_code);					\
-		__builtin_unreachable();				\
-	} while (1 == 1)
+#  define __do_die(_code) do {                  \
+                __builtin_trap();               \
+        } while (1 == 1)
 #endif
-
-//	*(unsigned int volatile *)(0xdead0000u) = 0xdead0000u;
 
 #define __is_type(_var,_type)				\
 	(__builtin_types_compatible_p(__typeof__(_var),_type))
