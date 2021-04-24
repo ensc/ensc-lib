@@ -15,43 +15,54 @@
 
 _hidden_ char const *ldap_escape_query(char const *s, ssize_t cnt_)
 {
-	char		*buf;
+	size_t const	cnt = cnt_ < 0 ? strlen(s) : (size_t)(cnt_);
+	char		*buf = NULL;
 	char		*d;
-	size_t		cnt;
+	int		pass;
 
-	if (cnt_ == -1)
-		cnt = strlen(s);
-	else
-		cnt = cnt_;
+	for (pass = 0; pass < 2; ++pass) {
+		size_t		i;
+		size_t		alloc_cnt = 0;
 
-	if (cnt > (SIZE_MAX - 1u) / 3u)
-		alloc_error(__func__, __FILE__, __LINE__, __func__);
+		d = buf;
 
-	buf = Xmalloc(cnt * 3 + 1);
+		for (i = 0; i < cnt; ++i) {
+			unsigned char	c = *s++;
 
-	d = buf;
-	while (cnt-- > 0) {
-		unsigned char	c = *s++;
+			switch (c) {
+			case '*':
+			case '(':
+			case ')':
+			case '\\':
+			case '\0':
+				if (d) {
+					/* pass #2 */
+					*d++ = '\\';
+					*d++ = HEX[(c >> 4) & 0x0f];
+					*d++ = HEX[(c >> 0) & 0x0f];
+				} else {
+					/* pass #1 */
+					alloc_cnt += 3;
+				}
+				break;
 
-		switch (c) {
-		case '*':
-		case '(':
-		case ')':
-		case '\\':
-		case '\0':
-			*d++ = '\\';
-			*d++ = HEX[(c >> 4) & 0x0f];
-			*d++ = HEX[(c >> 0) & 0x0f];
-			break;
-
-		default:
-			*d++ = c;
-			break;
+			default:
+				if (d) {
+					/* pass #2 */
+					*d++ = c;
+				} else {
+					/* pass #1 */
+					alloc_cnt += 1;
+				}
+				break;
+			}
 		}
+
+		if (pass == 0)
+			buf = Xmalloc(alloc_cnt + 1);
 	}
 
 	*d++ = '\0';
-	buf = Xrealloc(buf, d - buf);
 
 	return buf;
 }
